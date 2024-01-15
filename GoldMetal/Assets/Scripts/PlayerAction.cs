@@ -67,7 +67,6 @@ public class PlayerAction : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Jump") && scanedObj != null) {
-            //print(scanedObj.ToString());
             gameManager.Action(scanedObj);
         }
     }
