@@ -14,6 +14,8 @@ public class PlayerAction : MonoBehaviour
     Animator animator;
     Vector3 dirVec;
     GameObject scanedObj;
+    public GameManager gameManager;
+
 
     private void Awake() {
         rigid = GetComponent<Rigidbody2D>();
@@ -22,13 +24,13 @@ public class PlayerAction : MonoBehaviour
 
     void Update()
     {
-        h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical");
+        h = gameManager.isAction ? 0 : Input.GetAxisRaw("Horizontal");
+        v = gameManager.isAction ? 0 : Input.GetAxisRaw("Vertical");
 
-        hDown = Input.GetButtonDown("Horizontal");
-        vDown = Input.GetButtonDown("Vertical");
-        hUp = Input.GetButtonUp("Horizontal");
-        vUp = Input.GetButtonUp("Vertical");
+        hDown = gameManager.isAction ? false : Input.GetButtonDown("Horizontal");
+        vDown = gameManager.isAction ? false : Input.GetButtonDown("Vertical");
+        hUp = gameManager.isAction ? false : Input.GetButtonUp("Horizontal");
+        vUp = gameManager.isAction ? false : Input.GetButtonUp("Vertical");
 
         if (hDown) {
             isHorizonMove = true;
@@ -65,7 +67,8 @@ public class PlayerAction : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Jump") && scanedObj != null) {
-            print(scanedObj.ToString());
+            //print(scanedObj.ToString());
+            gameManager.Action(scanedObj);
         }
     }
 
