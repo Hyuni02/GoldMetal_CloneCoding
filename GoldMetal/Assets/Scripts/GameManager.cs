@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public TalkManager talkManager;
+    public QuestManager questManager;
 
     public GameObject TextPanel;
     public Text TalkText;
@@ -17,27 +18,34 @@ public class GameManager : MonoBehaviour
 
     public void Start() {
         TextPanel.gameObject.SetActive(false);
+
+        print(questManager.CheckQuest());
     }
 
     public void Action(GameObject scanObj) {
-
-        isAction = true;
+        //Get Current Object
         scanObject = scanObj;
         ObjectData data = scanObj.GetComponent<ObjectData>();
         Talk(data.id, data.isNPC);
 
+        //Visible Talk for Action
         TextPanel.gameObject.SetActive(isAction);
     }
 
     void Talk(int id, bool isnpc) {
-        string talkData = talkManager.GetTalk(id, talkidx);
+        //Set Talk Data
+        int questTalkIndex = questManager.GetQuestTalkIndex(id);
+        string talkData = talkManager.GetTalk(id + questTalkIndex, talkidx);
 
+        //End Talk
         if (talkData == null) {
             isAction = false;
             talkidx = 0;
+            print(questManager.CheckQuest(id));
             return;
         }
 
+        //Continue Talk
         if(isnpc) {
             TalkText.text = talkData.Split(':')[0];
 
